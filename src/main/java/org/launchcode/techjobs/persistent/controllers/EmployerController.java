@@ -18,8 +18,11 @@ public class EmployerController {
     @Autowired
     private EmployerRepository employerRepository;
 
+// 1. Add private field of EmployerRepository with @Autowired
+// 2. Add index method that responds to /employers
 
-    @GetMapping("employer")
+
+    @GetMapping("") // This method list all employers in the database
     public String displayAllEmployers(Model model){
         model.addAttribute("title", "All Employers");
         model.addAttribute("employers", employerRepository.findAll());
@@ -36,14 +39,13 @@ public class EmployerController {
     public String processAddEmployerForm(@ModelAttribute @Valid Employer newEmployer,
                                     Errors errors, Model model) {
         if (errors.hasErrors()) {
-            model.addAttribute("title", "Create Employer");
             return "employers/add";
         }
         employerRepository.save(newEmployer);
         return "redirect:";
     }
 
-    @GetMapping("view/{employerId}")
+    @GetMapping("view/{employerId}") //
     public String displayViewEmployer(Model model, @PathVariable int employerId) {
 
         Optional optEmployer = employerRepository.findById(employerId);

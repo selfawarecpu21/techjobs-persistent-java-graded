@@ -14,23 +14,23 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
-@RequestMapping
+@RequestMapping("skills")
 public class SkillController {
 
     @Autowired
     private SkillRepository skillRepository;
 
-    @GetMapping("skill")
+    @GetMapping("")
     public String displayAllSkills(Model model){
         model.addAttribute("title", "All Skills");
-        model.addAttribute("skill", skillRepository.findAll());
+        model.addAttribute("skills", skillRepository.findAll());
         return "skills/index";
     }
 
 
     @GetMapping("add")
     public String displayAddEmployerForm(Model model) {
-        model.addAttribute(new Employer());
+        model.addAttribute(new Skill());
         return "skills/add";
     }
 

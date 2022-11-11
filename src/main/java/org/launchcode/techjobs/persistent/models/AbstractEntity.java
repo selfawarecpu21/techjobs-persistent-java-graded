@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
-@MappedSuperclass
+@MappedSuperclass // Allows for classes that extend AbstractEntity to inherit @Id, @GeneratedValue
 public abstract class AbstractEntity {
 
 
@@ -15,6 +15,7 @@ public abstract class AbstractEntity {
     @GeneratedValue
     private int id;
 
+    // Validation annotations so name cant be blank and has size constraints
     @NotBlank
     @Size(min=4, max=75)
     private String name;
