@@ -1,6 +1,8 @@
 package org.launchcode.techjobs.persistent.controllers;
 
+import org.launchcode.techjobs.persistent.models.Employer;
 import org.launchcode.techjobs.persistent.models.Job;
+import org.launchcode.techjobs.persistent.models.Skill;
 import org.launchcode.techjobs.persistent.models.data.EmployerRepository;
 import org.launchcode.techjobs.persistent.models.data.JobRepository;
 import org.launchcode.techjobs.persistent.models.data.SkillRepository;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by LaunchCode
@@ -51,10 +54,15 @@ public class HomeController {
     public String processAddJobForm(@ModelAttribute @Valid Job newJob,
                                        Errors errors, Model model, @RequestParam int employerId, @RequestParam List<Integer> skills) {
 
-        if (errors.hasErrors()) {
+        Optional optEmployer = employerRepository.findById(employerId);
+        List<Skill> skillsObjs = (List<Skill>) skillRepository.findAllById(skills);
+        newJob.setSkills(skillsObjs);
+        if (errors.hasErrors() || !optEmployer.isPresent()) {
             model.addAttribute("title", "Add Job");
             return "add";
         }
+        Employer employer = (Employer) optEmployer.get();
+        newJob.setEmployer(employer);
         jobRepository.save(newJob);
         return "redirect:";
     }
